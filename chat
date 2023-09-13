@@ -1,0 +1,50 @@
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
+import org.openqa.selenium.By;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
+
+public class ChatModuleAutomationTest {
+
+    public static void main(String[] args) {
+        
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
+        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "YourDeviceName");
+        capabilities.setCapability(MobileCapabilityType.APP, "path/to/your/app.apk"); // Replace with the path to your app's APK
+        capabilities.setCapability("appPackage", "com.yourapp.package");
+        capabilities.setCapability("appActivity", "com.yourapp.ChatActivity");
+
+
+        AndroidDriver<MobileElement> driver;
+        try {
+            driver = new AndroidDriver<>(new URL("http://localhost:4723/wd/hub"), capabilities);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+       
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        try {
+            //  chat elements
+            MobileElement chatInputField = driver.findElement(By.id("com.yourapp.package:id/chat_input_field"));
+            chatInputField.sendKeys("Hello, this is an automated message!");
+            
+            MobileElement sendButton = driver.findElement(By.id("com.yourapp.package:id/send_button"));
+            sendButton.click();
+            
+        
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the app and session
+            driver.quit();
+        }
+    }
+}
