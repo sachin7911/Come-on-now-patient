@@ -1,1 +1,52 @@
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
+import org.openqa.selenium.By;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
+
+public class SignupScreenAutomationTest {
+
+    public static void main(String[] args) {
+        // sign
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
+        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "YourDeviceName");
+        capabilities.setCapability(MobileCapabilityType.APP, "path/to/your/app.apk"); // Replace with the path to your app's APK
+        capabilities.setCapability("appPackage", "com.yourapp.package");
+        capabilities.setCapability("appActivity", "com.yourapp.SignupActivity");
+
+        // start
+        AndroidDriver<MobileElement> driver;
+        try {
+            driver = new AndroidDriver<>(new URL("http://localhost:4723/wd/hub"), capabilities);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // loading
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        try {
+            // Fields signup form
+            MobileElement nameField = driver.findElement(By.id("com.yourapp.package:id/name_field"));
+            nameField.sendKeys("John Doe");
+
+            MobileElement emailField = driver.findElement(By.id("com.yourapp.package:id/email_field"));
+            emailField.sendKeys("johndoe@example.com");
+
+            MobileElement passwordField = driver.findElement(By.id("com.yourapp.package:id/password_field"));
+            passwordField.sendKeys("password123");
+
+            MobileElement confirmPasswordField = driver.findElement(By.id("com.yourapp.package:id/confirm_password_field"));
+            confirmPasswordField.sendKeys("password123");
+
+            // Submit the form
+            MobileElement signupButton = driver.findElement(By.id("com.yourapp.package:id/signup_button"));
+            signupButton.click();
+
+            // You can add assertions or further validation steps
 
